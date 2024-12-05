@@ -1,0 +1,9 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\LenguaLarga\\Downloads\\Bibliotecas para el proyecto-20241128\\notion-sdk-jvm-core-1.11.1.jar",
+        "c:\\Users\\LenguaLarga\\Downloads\\Bibliotecas para el proyecto-20241128\\biblioteca11.jar",
+        "c:\\Users\\LenguaLarga\\Downloads\\Bibliotecas para el proyecto-20241128\\gson-2.10.1.jar",
+        "c:\\Users\\LenguaLarga\\Downloads\\Bibliotecas para el proyecto-20241128\\jadapter-for-native-tts-0.12.0.jar"
+    ]
+}
