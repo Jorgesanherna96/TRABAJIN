@@ -153,7 +153,7 @@ private void listarTareasIncompletas() {
 }
 
     private void listarHistorialCompleto() {
-        showMessage("Función para listar el historial completo de tareas no implementada todavía.");
+        controller.listarTareas();
     }
 
     private void crearTarea() {
