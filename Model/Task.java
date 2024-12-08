@@ -1,8 +1,11 @@
-package Model;
+package model;
 
 import java.util.Date;
+import java.io.Serializable;
 
-public class Task {
+
+public class Task implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int identificador;
     private String titulo;
     private Date fecha; // Usar java.util.Date

@@ -1,4 +1,4 @@
-package Model;
+package model;
 import java.util.*;
 import java.io.*;
 
@@ -6,11 +6,11 @@ public class BinaryRepository implements IRepository {
     private ArrayList<Task> tareas;
     private final String filePath;
 
-    public BinaryRepository(String filePath){
-        this.filePath =filePath;
-        this.tareas=new ArrayList<>();
+    public BinaryRepository() {
+        String userHome = System.getProperty("user.home");
+        this.filePath = userHome + File.separator + "tareas.bin"; // Ruta completa al archivo
+        this.tareas = new ArrayList<>();
         cargarTareas();
-
     }
 
     private void cargarTareas(){
@@ -41,7 +41,7 @@ public class BinaryRepository implements IRepository {
             }
         }
         tareas.add(t);
-
+        guardarTareas();
         return t;
 
        
@@ -52,6 +52,7 @@ public class BinaryRepository implements IRepository {
         if (!tareas.remove(t)) {
             throw new IllegalArgumentException("No se encontró la tarea para eliminar.");
         }
+        guardarTareas();
     }
     
     @Override
@@ -59,6 +60,8 @@ public class BinaryRepository implements IRepository {
         for (int i = 0; i < tareas.size(); i++) {
         if(tareas.get(i).equals(t)){
             //Aqui se modifica
+            tareas.set(i, t); // Reemplazar la tarea
+            guardarTareas(); 
             return;
         }
         }
@@ -71,6 +74,14 @@ public class BinaryRepository implements IRepository {
     public List<Task> getAllTasks(){
 
         return  tareas;
+    }
+    
+    private void guardarTareas() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            oos.writeObject(tareas); // Guardar la lista de tareas en el archivo
+        } catch (IOException e) {
+            System.err.println("Error al guardar las tareas: " + e.getMessage());
+        }
     }
     
 
