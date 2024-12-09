@@ -61,9 +61,18 @@ public class InteractiveView extends BaseView {
         System.out.print("Seleccione una opción: ");
     }
 
-    private void showMenuDetalle() {
+    private void showMenuDetalleCompletada() {
         System.out.println("\n--- Detalle de la Tarea ---");
-        System.out.println("1. Marcar como completada/pendiente");
+        System.out.println("1. Marcar como pendiente");
+        System.out.println("2. Modificar tarea");
+        System.out.println("3. Eliminar tarea");
+        System.out.println("0. Volver al menú CRUD");
+        System.out.print("Seleccione una opción: ");
+    }
+
+    private void showMenuDetallePendiente() {
+        System.out.println("\n--- Detalle de la Tarea ---");
+        System.out.println("1. Marcar como completada");
         System.out.println("2. Modificar tarea");
         System.out.println("3. Eliminar tarea");
         System.out.println("0. Volver al menú CRUD");
@@ -181,7 +190,7 @@ private void listarTareasIncompletas() {
             // Llamar al controlador para crear la tarea
             controller.crearTarea(id, titulo, contenido, prioridad, duracion, fecha);
         } catch (Exception e) {
-            showErrorMessage("Error en la entrada de datos. Intente nuevamente.");
+            showErrorMessage("Error "+e.getMessage());
             scanner.nextLine(); // Limpiar entrada inválida
         }
     }
@@ -190,7 +199,13 @@ private void listarTareasIncompletas() {
         while (true) {
             showMessage("\nDetalle de la Tarea:");
             showMessage(tarea.toString()); // Mostrar los datos de la tarea
-            showMenuDetalle();
+            if(tarea.isCompletada()){
+            showMenuDetalleCompletada();
+            }
+            else{
+            showMenuDetallePendiente();
+            }
+            
             int opcion = leerOpcion();
     
             if (opcion == 0) return; // Volver al menú CRUD
