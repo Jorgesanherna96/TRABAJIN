@@ -2,6 +2,7 @@ package model;
 import java.util.*;
 import java.io.*;
 
+
 public class BinaryRepository implements IRepository {
     private ArrayList<Task> tareas;
     private final String filePath;
@@ -12,22 +13,43 @@ public class BinaryRepository implements IRepository {
         this.tareas = new ArrayList<>();
         cargarTareas();
     }
+    private void cargarTareas() {
+        File file = new File(filePath);
+        if (!file.exists() || file.length() == 0) {
+            // Si el archivo no existe o está vacío, inicializa la lista de tareas vacía
+            tareas = new ArrayList<>();
+            return;
+        }
+    
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+           Object objeto= ois.readObject();
 
-    private void cargarTareas(){
+           if(objeto instanceof ArrayList<?>){
+                ArrayList<?> listaTemporal =(ArrayList<?>) objeto;
 
-        File file=new File(filePath);
-            if(!file.exists()){
+                for(Object i: listaTemporal) {
 
-                return;
-            }
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-                tareas = (ArrayList<Task>) ois.readObject(); // Cargar las tareas
-            } catch (IOException | ClassNotFoundException e) {
-                throw new RepositoryException("Error al cargar las tareas desde el tareas.bin",e);
-                
-            }
-        
+                    if(i instanceof Task){
+
+                        Task task=(Task) i;
+                        tareas.add(task);
+                    }
+
+                    else{
+
+                        throw new RepositoryException("Hay un objeto no valido");
+                    }
+                }
+
+           }
+        } catch (EOFException e) {
+            // Maneja el caso de archivo vacío o incompleto
+            tareas = new ArrayList<>();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RepositoryException("Error al cargar las tareas desde el archivo binario", e);
+        }
     }
+    
 
     @Override
     public Task addTask(Task t) {

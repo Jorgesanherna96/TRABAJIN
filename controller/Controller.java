@@ -1,10 +1,8 @@
 package controller;
-import java.util.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
+import model.ExporterException;
 import model.Model;
 import model.RepositoryException;
 import model.Task;
@@ -95,6 +93,44 @@ public class Controller {
             .forEach(t -> view.showMessage(t.toString())); // Mostrar las tareas
     }
 
+    
+
+    public void exportarTareas(String formato) {
+        try {
+            model.setExporter(formato); // Usamos la Factory para configurar el exportador
+            model.exportTasks();
+            view.showMessage("Exportación a " + formato + " completada con éxito.");
+        } catch (ExporterException e) {
+            view.showErrorMessage("Error en la exportación: " + e.getMessage());
+        } catch (Exception e) {
+            view.showErrorMessage("Error inesperado al exportar: " + e.getMessage());
+        }
+    }
+
+    public void importarTareas(String formato) {
+        try {
+            // Configuramos el exportador en el modelo
+            model.setExporter(formato); 
+            
+            // Usamos el exportador para importar las tareas
+            var tareasImportadas = model.importTasks();
+            
+            // Agregamos las tareas importadas al repositorio
+            if (tareasImportadas.isEmpty()) {
+                view.showMessage("No se han encontrado tareas para importar.");
+            } else {
+                for (Task tarea : tareasImportadas) {
+                    model.agregarTarea(tarea); // Agrega la tarea al repositorio
+                }
+                view.showMessage("Importación desde " + formato + " completada con éxito.");
+            }
+            
+        } catch (ExporterException e) {
+            throw new ExporterException("Error al leer el archivo CSV: " + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new ExporterException("Error al importar las tareas: " + e.getMessage(), e);
+        }
+    }
     
 
     

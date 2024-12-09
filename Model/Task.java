@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -136,25 +137,27 @@ public class Task implements Serializable {
     
 
     public static Task getTaskFromDelimitedString(String delimitedString, String delimiter) {
-        String[] chunks = delimitedString.split(delimiter);
-    
-        if (chunks.length != 7) {
+        String[] trozos = delimitedString.split(delimiter);
+   
+        if (trozos.length != 7) {
+            
             // Si no hay 7 campos, la línea es inválida
             return null;
         }
     
         try {
-            int identificador = Integer.parseInt(chunks[0]);
-            String titulo = chunks[1];
-            String contenido = chunks[2];
-            int prioridad = Integer.parseInt(chunks[3]);
-            int duracionEstimada = Integer.parseInt(chunks[4]);
-            boolean completada = Boolean.parseBoolean(chunks[5]);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd"); // Asumiendo el formato "yyyy-MM-dd"
-        LocalDate fecha = LocalDate.parse(chunks[6], formatter); 
+            int identificador = Integer.parseInt(trozos[0]);
+            String titulo = trozos[1];
+            String contenido = trozos[2];
+            int prioridad = Integer.parseInt(trozos[3]);
+            int duracionEstimada = Integer.parseInt(trozos[4]);
+            boolean completada = Boolean.parseBoolean(trozos[5]);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate fecha = LocalDate.parse(trozos[6], formatter); 
     
             return new Task(identificador, titulo, fecha, contenido, prioridad, duracionEstimada, completada);
         } catch (Exception e) {
+           
             // Si algún campo es inválido (por ejemplo, al convertir números), devolvemos null
             return null;
         }

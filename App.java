@@ -6,7 +6,7 @@ import view.InteractiveView;
 public class App {
     public static void main(String[] args) {
         // Configurar la ruta del archivo de datos
-        String filePath = ".tareas.bin";
+        
 
         // Crear los componentes principales
         BinaryRepository repository = new BinaryRepository();

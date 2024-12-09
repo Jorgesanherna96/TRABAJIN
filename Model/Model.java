@@ -4,10 +4,14 @@ import java.util.List;
 
 public class Model {
     private final IRepository repository;
-
+    private IExporter exporter;
     // Constructor que recibe el repositorio
     public Model(IRepository repository) {
         this.repository = repository;
+    }
+
+    public void setExporter(String exporter) {
+        this.exporter = ExporterFactory.getExporter(exporter);
     }
 
     // Métodos para gestionar tareas
@@ -54,11 +58,17 @@ public class Model {
         return repository.getAllTasks();
     }
 
-    /*public void saveData() {
-        repository.saveData();
+    public List<Task> importTasks() {
+        if (exporter == null) {
+            throw new ExporterException("Exportador no configurado.");
+        }
+        return exporter.importTasks();
     }
 
-    public void loadData() {
-        repository.loadData();
-    }*/
+    public void exportTasks() {
+        if (exporter == null) {
+            throw new ExporterException("Exportador no configurado.");
+        }
+        exporter.exportTasks(repository.getAllTasks());
+    }
 }

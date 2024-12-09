@@ -3,6 +3,6 @@ import java.util.*;
 
 
 public interface IExporter {
-    void exportTasks(List<Task> tasks, String filePath) throws ExporterException;
-    List<Task> importTasks(String filePath) throws ExporterException;
+    void exportTasks(List<Task> tasks) throws ExporterException;
+    List<Task> importTasks() throws ExporterException;
 }

@@ -290,18 +290,34 @@ private void listarTareasIncompletas() {
     }
 
     private void exportarJSON() {
-        showMessage("Función para exportar a JSON no implementada todavía.");
+        try {
+            controller.exportarTareas("JSON");
+        } catch (Exception e) {
+            showErrorMessage("Error al exportar a JSON: " + e.getMessage());
+        }
     }
 
     private void exportarCSV() {
-        showMessage("Función para exportar a CSV no implementada todavía.");
+        try {
+            controller.exportarTareas("CSV");
+        } catch (Exception e) {
+            showErrorMessage("Error al exportar a CSV: " + e.getMessage());
+        }
     }
 
     private void importarJSON() {
-        showMessage("Función para importar desde JSON no implementada todavía.");
+        try {
+            controller.importarTareas("JSON");
+        } catch (Exception e) {
+            showErrorMessage("Error al importar desde JSON: " + e.getMessage());
+        }
     }
 
     private void importarCSV() {
-        showMessage("Función para importar desde CSV no implementada todavía.");
+        try {
+            controller.importarTareas("CSV");
+        } catch (Exception e) {
+            showErrorMessage("Error al importar desde CSV: " + e.getMessage());
+        }
     }
 }
