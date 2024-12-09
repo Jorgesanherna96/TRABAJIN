@@ -2,6 +2,7 @@ package model;
 
 import java.util.Date;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 
 
 public class Task implements Serializable {
@@ -88,10 +89,12 @@ public class Task implements Serializable {
     // Método toString
     @Override
     public String toString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+         String fechaFormateada = (fecha != null) ? dateFormat.format(fecha) : "Sin fecha";
         return "Task{" +
                 "identificador=" + identificador +
                 ", titulo='" + titulo + '\'' +
-                ", fecha=" + fecha +
+                ", fecha=" + fechaFormateada +
                 ", contenido='" + contenido + '\'' +
                 ", prioridad=" + prioridad +
                 ", duracionEstimada=" + duracionEstimada +
