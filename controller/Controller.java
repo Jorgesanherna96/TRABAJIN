@@ -1,9 +1,12 @@
 package controller;
 import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import model.Model;
+import model.RepositoryException;
 import model.Task;
 import view.BaseView;
 
@@ -35,17 +38,18 @@ public class Controller {
     public void crearTarea(int id, String titulo, String contenido, int prioridad, int duracion, String fecha) {
     try {
         // Convertir la fecha ingresada por el usuario a un objeto Date
-        Date fechaTarea = new SimpleDateFormat("dd/MM/yyyy").parse(fecha);
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        
+        // Convertir la cadena de fecha a LocalDate
+        LocalDate fechaTarea = LocalDate.parse(fecha, formatter);
         // Crear la nueva tarea
         Task nuevaTarea = new Task(id, titulo, fechaTarea, contenido, prioridad, duracion, false);
         model.agregarTarea(nuevaTarea);
 
         view.showMessage("Tarea creada con éxito.");
-    } catch (ParseException e) {
-        view.showErrorMessage("Formato de fecha inválido. Use el formato dd/MM/yyyy.");
-    } catch (IllegalArgumentException e) {
-        view.showErrorMessage("Error al crear la tarea: " + e.getMessage());
+    } 
+    catch (RepositoryException e) {
+        view.showErrorMessage("Error en el repositorio: " + e.getMessage());
     }
 }
 
@@ -65,8 +69,8 @@ public class Controller {
         try {
             model.eliminarTareaPorId(id);
             view.showMessage("Tarea eliminada con éxito.");
-        } catch (Exception e) {
-            view.showErrorMessage("Error al eliminar la tarea: " + e.getMessage());
+        } catch (RepositoryException e) {
+            view.showErrorMessage("Error en el repositorio: " + e.getMessage());
         }
     }
 
@@ -74,8 +78,8 @@ public class Controller {
         try {
             model.modificarTarea(tarea.getIdentificador(), tarea.getTitulo(), tarea.getContenido(), tarea.getPrioridad());
             view.showMessage("Tarea modificada con éxito.");
-        } catch (Exception e) {
-            view.showErrorMessage("Error al modificar la tarea: " + e.getMessage());
+        } catch (RepositoryException e) {
+            view.showErrorMessage("Error en el repositorio: " + e.getMessage());
         }
     }
 

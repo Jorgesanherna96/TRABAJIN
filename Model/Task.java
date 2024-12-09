@@ -1,21 +1,24 @@
 package model;
 
 import java.util.Date;
+import java.util.Locale;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 public class Task implements Serializable {
     private static final long serialVersionUID = 1L;
     private int identificador;
     private String titulo;
-    private Date fecha; // Usar java.util.Date
+    private LocalDate fecha; // Usar java.util.Date
     private String contenido;
     private int prioridad; // Rango entre 1 y 5
     private int duracionEstimada; // En minutos
     private boolean completada;
 
     // Constructor
-    public Task(int identificador, String titulo, Date fecha, String contenido, int prioridad, int duracionEstimada, boolean completada) {
+    public Task(int identificador, String titulo, LocalDate fecha, String contenido, int prioridad, int duracionEstimada, boolean completada) {
         this.identificador = identificador;
         this.titulo = titulo;
         this.fecha = fecha;
@@ -42,11 +45,11 @@ public class Task implements Serializable {
         this.titulo = titulo;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
@@ -120,6 +123,40 @@ public class Task implements Serializable {
             return false;
         return true;
     }
+
+    public String getInstanceAsDelimitedString(String delimiter) {
+        return String.format(Locale.ENGLISH, "%d%s%s%s%s%s%d%s%d%s%b%s%s",
+                identificador, delimiter, titulo, delimiter, contenido, delimiter, prioridad,
+                delimiter, duracionEstimada, delimiter, completada, delimiter, fecha);
+    }
+    
+
+    public static Task getTaskFromDelimitedString(String delimitedString, String delimiter) {
+        String[] chunks = delimitedString.split(delimiter);
+    
+        if (chunks.length != 7) {
+            // Si no hay 7 campos, la línea es inválida
+            return null;
+        }
+    
+        try {
+            int identificador = Integer.parseInt(chunks[0]);
+            String titulo = chunks[1];
+            String contenido = chunks[2];
+            int prioridad = Integer.parseInt(chunks[3]);
+            int duracionEstimada = Integer.parseInt(chunks[4]);
+            boolean completada = Boolean.parseBoolean(chunks[5]);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd"); // Asumiendo el formato "yyyy-MM-dd"
+        LocalDate fecha = LocalDate.parse(chunks[6], formatter); 
+    
+            return new Task(identificador, titulo, fecha, contenido, prioridad, duracionEstimada, completada);
+        } catch (Exception e) {
+            // Si algún campo es inválido (por ejemplo, al convertir números), devolvemos null
+            return null;
+        }
+    }
+    
+    
 
     
 }

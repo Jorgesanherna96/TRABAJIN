@@ -23,8 +23,8 @@ public class BinaryRepository implements IRepository {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
                 tareas = (ArrayList<Task>) ois.readObject(); // Cargar las tareas
             } catch (IOException | ClassNotFoundException e) {
-                System.err.println("Error al cargar las tareas: " + e.getMessage());
-                tareas = new ArrayList<>(); // Si hay errores, inicializa la lista como vacía
+                throw new RepositoryException("Error al cargar las tareas desde el tareas.bin",e);
+                
             }
         
     }
@@ -37,7 +37,7 @@ public class BinaryRepository implements IRepository {
 
             if(tarea.equals(t)){
 
-                throw new IllegalArgumentException("Ya existe una tarea con este identificador.");
+                throw new RepositoryException("Ya existe una tarea con este identificador.");
             }
         }
         tareas.add(t);
@@ -50,7 +50,7 @@ public class BinaryRepository implements IRepository {
     @Override
     public void removeTask(Task t) {
         if (!tareas.remove(t)) {
-            throw new IllegalArgumentException("No se encontró la tarea para eliminar.");
+            throw new RepositoryException("No se encontró la tarea para eliminar.");
         }
         guardarTareas();
     }
@@ -66,7 +66,7 @@ public class BinaryRepository implements IRepository {
         }
         }
         
-        throw new IllegalArgumentException("No se encontró la tarea para modificar.");
+        throw new RepositoryException("No se encontró la tarea para modificar.");
         
     }
     
@@ -80,7 +80,7 @@ public class BinaryRepository implements IRepository {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
             oos.writeObject(tareas); // Guardar la lista de tareas en el archivo
         } catch (IOException e) {
-            System.err.println("Error al guardar las tareas: " + e.getMessage());
+            throw new RepositoryException("Error al guardar tareas en tareas.bin",e);
         }
     }
     
