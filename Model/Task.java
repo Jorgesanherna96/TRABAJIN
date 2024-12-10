@@ -12,10 +12,10 @@ public class Task implements Serializable {
     private static final long serialVersionUID = 1L;
     private int identificador;
     private String titulo;
-    private LocalDate fecha; // Usar java.util.Date
+    private LocalDate fecha; 
     private String contenido;
-    private int prioridad; // Rango entre 1 y 5
-    private int duracionEstimada; // En minutos
+    private int prioridad; 
+    private int duracionEstimada; 
     private boolean completada;
 
     // Constructor
@@ -24,12 +24,12 @@ public class Task implements Serializable {
         this.titulo = titulo;
         this.fecha = fecha;
         this.contenido = contenido;
-        setPrioridad(prioridad); // Validación en el setter
+        setPrioridad(prioridad); 
         this.duracionEstimada = duracionEstimada;
         this.completada = completada;
     }
 
-    // Getters y Setters
+    
     public int getIdentificador() {
         return identificador;
     }
@@ -89,7 +89,6 @@ public class Task implements Serializable {
         this.completada = completada;
     }
 
-    // Método toString
     @Override
     public String toString() {
         DateTimeFormatter dateFormat=DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -141,7 +140,6 @@ public class Task implements Serializable {
    
         if (trozos.length != 7) {
             
-            // Si no hay 7 campos, la línea es inválida
             return null;
         }
     
@@ -158,7 +156,6 @@ public class Task implements Serializable {
             return new Task(identificador, titulo, fecha, contenido, prioridad, duracionEstimada, completada);
         } catch (Exception e) {
            
-            // Si algún campo es inválido (por ejemplo, al convertir números), devolvemos null
             return null;
         }
     }

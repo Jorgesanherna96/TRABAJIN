@@ -9,14 +9,13 @@ public class BinaryRepository implements IRepository {
 
     public BinaryRepository() {
         String userHome = System.getProperty("user.home");
-        this.filePath = userHome + File.separator + "tareas.bin"; // Ruta completa al archivo
+        this.filePath = userHome + File.separator + "tareas.bin";
         this.tareas = new ArrayList<>();
         cargarTareas();
     }
     private void cargarTareas() {
         File file = new File(filePath);
         if (!file.exists() || file.length() == 0) {
-            // Si el archivo no existe o está vacío, inicializa la lista de tareas vacía
             tareas = new ArrayList<>();
             return;
         }
@@ -43,7 +42,6 @@ public class BinaryRepository implements IRepository {
 
            }
         } catch (EOFException e) {
-            // Maneja el caso de archivo vacío o incompleto
             tareas = new ArrayList<>();
         } catch (IOException | ClassNotFoundException e) {
             throw new RepositoryException("Error al cargar las tareas desde el archivo binario", e);
@@ -81,8 +79,7 @@ public class BinaryRepository implements IRepository {
     public void modifyTask(Task t) {
         for (int i = 0; i < tareas.size(); i++) {
         if(tareas.get(i).equals(t)){
-            //Aqui se modifica
-            tareas.set(i, t); // Reemplazar la tarea
+            tareas.set(i, t); 
             guardarTareas(); 
             return;
         }
@@ -100,7 +97,7 @@ public class BinaryRepository implements IRepository {
     
     private void guardarTareas() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
-            oos.writeObject(tareas); // Guardar la lista de tareas en el archivo
+            oos.writeObject(tareas); 
         } catch (IOException e) {
             throw new RepositoryException("Error al guardar tareas en tareas.bin",e);
         }

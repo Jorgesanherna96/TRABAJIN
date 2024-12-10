@@ -10,7 +10,7 @@ public class ExporterFactory {
             case "CSV":
                 return new ExportarCSV();
             case "JSON":
-                // Regresa un exportador JSON cuando lo implementes
+               
                return new ExportarJSON();
             default:
                 throw new  ExporterException("Formato no reconocido: " + formato);

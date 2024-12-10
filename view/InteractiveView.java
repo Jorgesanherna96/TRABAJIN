@@ -19,7 +19,7 @@ public class InteractiveView extends BaseView {
         while (true) {
             showMenuPrincipal();
             int opcion = leerOpcion();
-            if (opcion == 0) { // Salir
+            if (opcion == 0) { 
                 end();
                 break;
             }
@@ -114,7 +114,7 @@ public class InteractiveView extends BaseView {
         while (true) {
             showMenuCRUD();
             int opcion = leerOpcion();
-            if (opcion == 0) return; // Volver al menú principal
+            if (opcion == 0) return; 
             procesarOpcionCRUD(opcion);
         }
     }
@@ -142,9 +142,9 @@ public class InteractiveView extends BaseView {
        try {
         System.out.print("ID de la tarea: ");
         int id = scanner.nextInt();
-        scanner.nextLine(); // Limpiar buffer
+        scanner.nextLine(); 
 
-        // Obtener la tarea desde el controlador
+       
         Task tarea = controller.obtenerTareaPorId(id);
         if (tarea == null) {
             showErrorMessage("No se encontró la tarea con el ID proporcionado.");
@@ -153,7 +153,7 @@ public class InteractiveView extends BaseView {
         }
     } catch (Exception e) {
         showErrorMessage("Error en la entrada de datos. Intente nuevamente.");
-        scanner.nextLine(); // Limpiar entrada inválida
+        scanner.nextLine(); 
     }
 }
 
@@ -169,7 +169,7 @@ private void listarTareasIncompletas() {
         try {
             System.out.print("ID: ");
             int id = scanner.nextInt();
-            scanner.nextLine(); // Limpiar buffer
+            scanner.nextLine(); 
     
             System.out.print("Título: ");
             String titulo = scanner.nextLine();
@@ -182,23 +182,22 @@ private void listarTareasIncompletas() {
     
             System.out.print("Duración Estimada (en minutos): ");
             int duracion = scanner.nextInt();
-            scanner.nextLine(); // Limpiar buffer
-    
+            scanner.nextLine(); 
             System.out.print("Fecha (dd/MM/yyyy): ");
             String fecha = scanner.nextLine();
     
-            // Llamar al controlador para crear la tarea
+            
             controller.crearTarea(id, titulo, contenido, prioridad, duracion, fecha);
         } catch (Exception e) {
             showErrorMessage("Error "+e.getMessage());
-            scanner.nextLine(); // Limpiar entrada inválida
+            scanner.nextLine(); 
         }
     }
     
     private void mostrarMenuDetalle(Task tarea) {
         while (true) {
             showMessage("\nDetalle de la Tarea:");
-            showMessage(tarea.toString()); // Mostrar los datos de la tarea
+            showMessage(tarea.toString()); 
             if(tarea.isCompletada()){
             showMenuDetalleCompletada();
             }
@@ -208,7 +207,7 @@ private void listarTareasIncompletas() {
             
             int opcion = leerOpcion();
     
-            if (opcion == 0) return; // Volver al menú CRUD
+            if (opcion == 0) return; 
     
             procesarOpcionDetalle(tarea, opcion);
         }
@@ -216,21 +215,21 @@ private void listarTareasIncompletas() {
 
     private void procesarOpcionDetalle(Task tarea, int opcion) {
         switch (opcion) {
-            case 1: // Marcar como completada/pendiente
+            case 1: 
                 boolean estadoActual = tarea.isCompletada();
-                tarea.setCompletada(!estadoActual); // Cambiar estado
-                controller.modificarTarea(tarea); // Actualizar en el modelo
+                tarea.setCompletada(!estadoActual); 
+                controller.modificarTarea(tarea); 
                 showMessage("Tarea marcada como " + (tarea.isCompletada() ? "completada." : "pendiente."));
                 break;
     
-            case 2: // Modificar tarea
+            case 2: 
                 modificarTarea(tarea);
                 break;
     
-            case 3: // Eliminar tarea
+            case 3: 
                 controller.eliminarTarea(tarea.getIdentificador());
                 showMessage("Tarea eliminada con éxito.");
-                return; // Volver al menú CRUD
+                return; 
     
             default:
                 showErrorMessage("Opción no válida. Intente nuevamente.");
@@ -245,19 +244,17 @@ private void listarTareasIncompletas() {
             String nuevoContenido = scanner.nextLine();
             System.out.print("Nueva prioridad (1-5): ");
             int nuevaPrioridad = scanner.nextInt();
-            scanner.nextLine(); // Limpiar buffer
+            scanner.nextLine(); 
     
-            // Actualizar los valores de la tarea
             tarea.setTitulo(nuevoTitulo);
             tarea.setContenido(nuevoContenido);
             tarea.setPrioridad(nuevaPrioridad);
     
-            // Llamar al controlador para guardar los cambios
             controller.modificarTarea(tarea);
             showMessage("Tarea modificada con éxito.");
         } catch (Exception e) {
             showErrorMessage("Error en la entrada de datos. Intente nuevamente.");
-            scanner.nextLine(); // Limpiar entrada inválida
+            scanner.nextLine(); 
         }
     }
 
@@ -265,7 +262,7 @@ private void listarTareasIncompletas() {
         while (true) {
             showMenuExportImport();
             int opcion = leerOpcion();
-            if (opcion == 0) return; // Volver al menú principal
+            if (opcion == 0) return; 
             procesarOpcionExportacionImportacion(opcion);
         }
     }
